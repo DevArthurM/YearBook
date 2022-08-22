@@ -6,11 +6,20 @@ export async function createTable() {
     })
 }
 
+export async function getUser() {
+    return openDatabase()
+        .then(db => {
+            return db.all('SELECT * FROM users')
+        })
+        .then(data => data)
+}
+
 export async function insertUser(user) {
     openDatabase()
         .then(db => {
             db.run('INSERT INTO user (name,brief) VALUES (?,?)', [user.name, user.brief]);
-        })
+        }
+        )
 }
 
 export async function updateUser(user) {

@@ -1,6 +1,6 @@
 import openDatabase from './DataBaseController/databaseconfig.js'
 import express, { request } from 'express'
-import { insertUser , updateUser} from './Controler/user.js'
+import { insertUser , updateUser, getUser} from './Controler/user.js'
 const app = express();
 app.use(express.json());
 openDatabase()
@@ -16,8 +16,14 @@ app.get('/', (request, response) => {
     response.send('<h1>HELLO</h1>');
 })
 
+app.get('/getUser', async function (request, response){
+    let users = await getUser()
+    console.log("Get users")
+    response.json(users);
+})
+
 app.post('/updateUser', (request, response) => {
-    console.log("Insert user by : "+request.body);
+    console.log("Update user by : "+request.body);
     updateUser(request.body)
     response.json({
         "statusCode": 200
