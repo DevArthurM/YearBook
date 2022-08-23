@@ -8,18 +8,19 @@ export async function createTable() {
 
 export async function getUser() {
     return openDatabase()
-        .then(db => {
-            return db.all('SELECT * FROM users')
-        })
+        .then(db => { return db.all('SELECT * FROM user') })
         .then(data => data)
 }
 
 export async function insertUser(user) {
-    openDatabase()
-        .then(db => {
-            db.run('INSERT INTO user (name,brief) VALUES (?,?)', [user.name, user.brief]);
-        }
-        )
+    return openDatabase()
+        .then(async db => 
+             {
+                db.run('INSERT INTO user (name,brief) VALUES (?,?)', [user.name, user.brief])
+                return await db.all('SELECT * FROM user')
+            }
+             )
+        .then(data => data)
 }
 
 export async function updateUser(user) {
@@ -29,3 +30,10 @@ export async function updateUser(user) {
         }
         )
 }
+
+export async function deleteUser(id) {
+    return openDatabase()
+        .then(db => { return db.run('DELETE FROM user WHERE id = ?', [id]); })
+        .then(data => data)
+}
+
